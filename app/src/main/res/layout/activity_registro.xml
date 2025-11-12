@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="32dp"
-    android:background="@color/white"
+    android:background="@color/blanco"
     tools:context=".Registro">
     <!-- Guía Horizontal para centrar el formulario (Ajustada al 25% para mejor
    espacio) -->
@@ -24,7 +24,7 @@
         android:text="Crea tu Cuenta"
         android:textSize="36sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="@color/verdeEtiqueta"
         app:layout_constraintBottom_toTopOf="@+id/tv_subtitle_registro"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -122,7 +122,7 @@
         android:clickable="true"
         android:focusable="true"
         android:text="¿Ya tienes cuenta? Inicia sesión."
-        android:textColor="?attr/colorPrimary"
+        android:textColor="@color/verdeEtiqueta"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

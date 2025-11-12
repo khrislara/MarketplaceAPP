@@ -58,7 +58,7 @@ burbuja." />
                 android:layout_marginTop="4dp"
                 android:textSize="10sp"
                 android:text="10:30 AM"
-                android:textColor="#888888" />
+                android:textColor="#023C09" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

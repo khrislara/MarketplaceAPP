@@ -37,7 +37,8 @@
         <activity android:name=".AnunciosActivity" />
         <activity android:name=".CuentaActivity" />
         <activity android:name=".Detalle_Producto" />
-
+        <activity android:name=".CambiarPasswordActivity" />
+        <activity android:name=".EditarPerfilActivity" />
 
     </application>
 </manifest>

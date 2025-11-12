@@ -15,7 +15,7 @@
             android:id="@+id/toolbar_publicar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/verdeEtiqueta"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:title="Publicar Nuevo Producto" />
     </com.google.android.material.appbar.AppBarLayout>
@@ -58,7 +58,7 @@ producto" />
                         android:text="Seleccionar Imagen (Galería)"
                         android:layout_margin="8dp"
                         android:textColor="@android:color/white"
-                        android:backgroundTint="?attr/colorAccent"/>
+                        android:backgroundTint="@color/verdeclaro"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <com.google.android.material.textfield.TextInputLayout
@@ -115,7 +115,7 @@ producto" />
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
-                android:backgroundTint="?attr/colorPrimary" />
+                android:backgroundTint="@color/verdeEtiqueta" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

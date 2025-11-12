@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/blanco"
     tools:context=".EditarPerfilActivity">
 
     <!-- AppBar (Barra Superior) con Botón de Retroceso -->
@@ -18,7 +18,7 @@
             android:id="@+id/toolbar_editar_perfil"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/verdeEtiqueta"
             app:title="Editar perfil"
             app:titleTextColor="@android:color/white"
             app:navigationIcon="@drawable/ic_arrow_back_white" />

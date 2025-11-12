@@ -1,5 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="verdeEtiqueta">#2E7D32</color> <!-- Verde oscuro -->
+    <color name="verdeclaro">#ACF0AF</color>   <!-- Verde medio -->
+    <color name="blanco">#FFFFFF</color>       <!-- Blanco -->
+    <color name="azul">#95D3FF</color>
+    <color name="verdementa">#96FF76</color>
 </resources>
