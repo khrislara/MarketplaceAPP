@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/house"
         android:title="Inicio" />
     <item
         android:id="@+id/navigation_chats"
-        android:icon="@drawable/ic_chat"
+        android:icon="@drawable/men"
         android:title="Chats" />
     <item
         android:id="@+id/navigation_placeholder"
@@ -14,10 +14,10 @@
         android:enabled="true"/>
     <item
         android:id="@+id/navigation_ads"
-        android:icon="@drawable/ic_favorite_border"
+        android:icon="@drawable/corazon"
         android:title="Anuncios" />
     <item
         android:id="@+id/navigation_account"
-        android:icon="@drawable/ic_person"
+        android:icon="@drawable/user"
         android:title="Cuenta" />
 </menu>

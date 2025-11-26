@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/bicicleta"
+            android:src="@drawable/celular"
             android:contentDescription="Imagen del producto en venta"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +48,7 @@
             android:text="$ 99.990"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="?attr/colorAccent"
+            android:textColor="@color/verde_bosque"
             app:layout_constraintStart_toStartOf="@+id/tv_producto_titulo"
             app:layout_constraintTop_toBottomOf="@+id/tv_producto_titulo" />
         <!-- Vendedor -->
@@ -59,7 +59,7 @@
             android:layout_marginEnd="16dp"
             android:text="Vendido por: [Usuario]"
             android:textSize="12sp"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/verdeEtiqueta"
 
             app:layout_constraintBaseline_toBaselineOf="@+id/tv_producto_precio"
             app:layout_constraintEnd_toEndOf="parent" />

@@ -1,7 +1,61 @@
 <resources>
+
+    <!-- ================= VERDES EXISTENTES ================= -->
     <color name="verdeEtiqueta">#2E7D32</color> <!-- Verde oscuro -->
     <color name="verdeclaro">#ACF0AF</color>   <!-- Verde medio -->
-    <color name="blanco">#FFFFFF</color>       <!-- Blanco -->
-    <color name="azul">#95D3FF</color>
     <color name="verdementa">#96FF76</color>
+
+    <!-- ================= AZUL EXISTENTE ================= -->
+    <color name="azul">#95D3FF</color>
+
+    <!-- ================= NUEVOS VERDES ================= -->
+    <color name="verde_oscuro">#1B5E20</color>
+    <color name="verde_bosque">#388E3C</color>
+    <color name="verde_limon">#CDFF57</color>
+    <color name="verde_pastel">#C8F7C5</color>
+    <color name="verde_esmeralda">#50C878</color>
+    <color name="verde_mar">#2ECC71</color>
+
+    <!-- ================= VERDES ADICIONALES ================= -->
+    <color name="verde_oliva">#808000</color>
+    <color name="verde_musgo">#556B2F</color>
+    <color name="verde_pasto">#7CFC00</color>
+    <color name="verde_chartreuse">#7FFF00</color>
+    <color name="verde_manazana">#8DB600</color>
+    <color name="verde_lima_neon">#32FF00</color>
+    <color name="verde_brilante">#00FF7F</color>
+    <color name="verde_primavera">#00FA9A</color>
+    <color name="verde_selva">#29AB87</color>
+    <color name="verde_bosque_oscuro">#014421</color>
+
+    <!-- ================= AMARILLENTOS / VERDOSOS ================= -->
+    <color name="amarillo_verdoso">#BFD641</color>
+    <color name="amarillo_lima">#DFFF00</color>
+    <color name="amarillo_verde_pastel">#E2F7C7</color>
+    <color name="amarillo_oliva_claro">#CCD17A</color>
+    <color name="amarillo_chartreuse_suave">#D5FF7F</color>
+    <color name="amarillo_manzana">#E2FF4B</color>
+
+    <!-- ================= AZULES ADICIONALES ================= -->
+    <color name="azul_oscuro">#0D47A1</color>
+    <color name="azul_medio">#1976D2</color>
+    <color name="azul_claro">#BBDEFB</color>
+    <color name="azul_cielo">#81D4FA</color>
+    <color name="azul_turquesa">#40E0D0</color>
+    <color name="azul_marino">#003366</color>
+    <color name="azul_pastel">#A7C7E7</color>
+    <color name="azul_rey">#4169E1</color>
+    <color name="azul_acero">#4682B4</color>
+    <color name="azul_petroleo">#003B46</color>
+    <color name="azul_acuamarina">#7FFFD4</color>
+    <color name="azul_glacial">#E0F7FA</color>
+    <color name="azul_artico">#B2EBF2</color>
+    <color name="azul_real_claro">#8AB6FF</color>
+    <color name="azul_pizarra">#2F4F4F</color>
+    <color name="azul_indigo">#3F51B5</color>
+
+    <!-- ================= OTROS ================= -->
+    <color name="blanco">#FFFFFF</color>
+    <color name="naranjo">#D33300</color>
+
 </resources>

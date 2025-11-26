@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_arrow_back"
+            android:src="@drawable/volver"
             android:contentDescription="Volver"
             app:tint="@color/verdeclaro" />
         <!-- Foto de Perfil (Avatar) -->
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:background="@color/verdeclaro"
+        android:background="@color/verde_esmeralda"
         android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +89,7 @@
             android:imeOptions="actionDone"
             android:inputType="textCapSentences|textMultiLine"
             android:textColor="@color/verdeclaro"
-            android:textColorHint="#999999"/>
+            android:textColorHint="#125400"/>
         <!-- Botón para Adjuntar Imagen (Icono de Galería) -->
         <ImageButton
             android:id="@+id/btnAttachImage"
@@ -120,7 +120,7 @@
         android:id="@+id/recyclerViewChat"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/azul"
+        android:background="@color/verde_pastel"
         android:paddingTop="8dp"
         android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/layout_header"

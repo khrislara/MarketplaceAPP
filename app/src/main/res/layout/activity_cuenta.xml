@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F0F5"
+    android:background="#FFFFFF"
     tools:context=".CuentaActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -21,7 +21,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/verdeEtiqueta"
             app:title="   Cuenta"
-            app:titleTextColor="@android:color/white" />
+            app:titleTextColor="@color/blanco" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -58,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_foreground"
+                    android:src="@drawable/login"
                     android:contentDescription="Foto de perfil del usuario" />
             </androidx.cardview.widget.CardView>
 
@@ -135,8 +135,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="EDITAR PERFIL"
-                    app:icon="@drawable/ic_edit"
+                    app:icon="@drawable/pluma"
                     style="@style/Widget.MaterialComponents.Button"
+
                     android:layout_marginBottom="8dp" />
 
                 <com.google.android.material.button.MaterialButton
@@ -144,7 +145,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="CAMBIAR PASSWORD"
-                    app:icon="@drawable/ic_lock"
+                    app:icon="@drawable/candado"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_marginBottom="8dp" />
 
@@ -153,7 +154,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="ELIMINAR MIS ANUNCIOS"
-                    app:icon="@drawable/ic_delete"
+                    app:icon="@drawable/basura"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_marginBottom="8dp" />
 
@@ -162,7 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="CERRAR SESIÓN"
-                    app:icon="@drawable/ic_logout"
+                    app:icon="@drawable/cerrar"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_marginBottom="8dp" />
 
@@ -177,7 +178,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Volver"
-        android:src="@drawable/ic_arrow_back"
+        android:src="@drawable/volver"
         app:layout_anchor="@+id/appBarLayout"
         app:layout_anchorGravity="start|center"
         app:tint="@color/blanco" />

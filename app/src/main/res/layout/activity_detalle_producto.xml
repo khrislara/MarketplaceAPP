@@ -17,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/verdeEtiqueta"
             app:title="Detalles del Producto"
-            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:navigationIcon="@drawable/volver"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     </com.google.android.material.appbar.AppBarLayout>
     <!-- Contenido desplazable del detalle del producto -->
@@ -79,7 +79,7 @@ contenido -->
                         android:text="$ 99.990 CLP"
                         android:textSize="28sp"
                         android:textStyle="bold"
-                        android:textColor="?attr/colorAccent"
+                        android:textColor="@color/verde_bosque"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_detalle_titulo"
                         />
@@ -89,7 +89,7 @@ contenido -->
                         android:layout_width="0dp"
                         android:layout_height="1dp"
                         android:layout_marginTop="16dp"
-                        android:background="@android:color/darker_gray"
+                        android:background="@color/verdeEtiqueta"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_detalle_precio"
@@ -112,7 +112,7 @@ contenido -->
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="Nombre de Usuario"
-                        android:textColor="?attr/colorPrimary"
+                        android:textColor="@color/verdeEtiqueta"
 
                         app:layout_constraintBaseline_toBaselineOf="@+id/tv_etiqueta_vendedor"
 
@@ -156,7 +156,7 @@ contenido -->
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="16dp"
         android:text="Contactar Vendedor"
-        app:icon="@android:drawable/ic_menu_send"
+        app:icon="@drawable/avion"
         android:textColor="@color/blanco"
         app:backgroundTint="@color/verdeEtiqueta"
         app:cornerRadius="12dp" />

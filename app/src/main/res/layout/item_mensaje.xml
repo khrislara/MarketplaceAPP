@@ -25,7 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteX="8dp"
-        tools:backgroundTint="#E0E0E0">
+        tools:backgroundTint="#8BC34A">
         <!-- tools:backgroundTint simula el color para la vista previa -->
         <LinearLayout
             android:id="@+id/ll_bubble_background"

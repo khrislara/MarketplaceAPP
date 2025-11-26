@@ -12,7 +12,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="48dp"
-        android:src="@drawable/login_blue"
+        android:src="@drawable/login"
         android:contentDescription="Logo de Marketplace"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
