@@ -2,4 +2,10 @@
 <resources>
     <item name="cerrar_item" type="id" />
     <item name="item_imagen" type="id" />
+    <item name="iv_publicar_imagen_placeholder" type="id" />
+    <item name="et_publicar_marca" type="id" />
+    <item name="spinner_categoria" type="id" />
+    <item name="et_publicar_direccion" type="id" />
+    <item name="rv_galeria_imagenes" type="id" />
+    <item name="spinner_condicion" type="id" />
 </resources>

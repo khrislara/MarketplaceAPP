@@ -20,7 +20,7 @@
             android:background="@color/verdeEtiqueta"
             app:title="Editar perfil"
             app:titleTextColor="@android:color/white"
-            app:navigationIcon="@drawable/ic_arrow_back_white" />
+            app:navigationIcon="@drawable/volver" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_camera_alt"
                 app:fabSize="mini"
-                app:tint="@android:color/white"
+                app:tint="@color/amarillo_verde_pastel"
                 android:contentDescription="Cambiar foto de perfil"
                 app:layout_constraintEnd_toEndOf="@id/card_perfil_editar"
                 app:layout_constraintBottom_toBottomOf="@id/card_perfil_editar"

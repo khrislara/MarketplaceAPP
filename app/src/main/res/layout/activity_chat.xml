@@ -27,7 +27,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/volver"
             android:contentDescription="Volver"
-            app:tint="@color/verdeclaro" />
+            app:tint="@color/azul_artico" />
         <!-- Foto de Perfil (Avatar) -->
         <ImageView
             android:id="@+id/imgProfile"
@@ -88,7 +88,7 @@
             android:background="@drawable/rounded_edittext_bg"
             android:imeOptions="actionDone"
             android:inputType="textCapSentences|textMultiLine"
-            android:textColor="@color/verdeclaro"
+            android:textColor="@color/azul_cielo"
             android:textColorHint="#125400"/>
         <!-- Botón para Adjuntar Imagen (Icono de Galería) -->
         <ImageButton
@@ -110,7 +110,7 @@
             android:layout_marginStart="8dp"
             android:contentDescription="Botón Enviar Mensaje"
             android:background="@drawable/send_button_bg"
-            android:src="@drawable/ic_send"
+            android:src="@drawable/avion"
             app:tint="@color/blanco"
             android:scaleType="fitCenter"
             android:padding="12dp"/>
@@ -120,7 +120,7 @@
         android:id="@+id/recyclerViewChat"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/verde_pastel"
+        android:background="@color/verdeclaro"
         android:paddingTop="8dp"
         android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/layout_header"
