@@ -8,4 +8,6 @@
     <item name="et_publicar_direccion" type="id" />
     <item name="rv_galeria_imagenes" type="id" />
     <item name="spinner_condicion" type="id" />
+    <item name="et_publicar_categoria" type="id" />
+    <item name="et_publicar_condicion" type="id" />
 </resources>

@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.myapplication">
 
     <!-- Permisos -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <!-- Permisos de almacenamiento (solo hasta SDK 28) -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
     <application
@@ -20,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
-
+        <!-- Actividad principal -->
         <activity
             android:name=".Login"
             android:exported="true">
@@ -30,15 +33,17 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Registro" />
-        <activity android:name=".Home" />
-        <activity android:name=".Publicar" />
-        <activity android:name=".ChatActivity" />
+        <!-- Otras actividades -->
         <activity android:name=".AnunciosActivity" />
+        <activity android:name=".CambiarPasswordActivity" />
+        <activity android:name=".ChatActivity" />
         <activity android:name=".CuentaActivity" />
         <activity android:name=".Detalle_Producto" />
-        <activity android:name=".CambiarPasswordActivity" />
         <activity android:name=".EditarPerfilActivity" />
+        <activity android:name=".Home" />
+        <activity android:name=".Registro" />
+        <activity android:name=".Publicar" />
 
     </application>
+
 </manifest>

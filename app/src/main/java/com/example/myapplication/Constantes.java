@@ -3,14 +3,14 @@ package com.example.myapplication;
 // Clase que contiene todas las constantes y métodos estáticos de utilidad
 public class Constantes {
 
-    // Constante para indicar el estado de un anuncio disponible
+    // --- ESTADO DEL ANUNCIO ---
     public static final String anuncio_disponible = "Disponible";
 
     // --- LISTA DE CATEGORÍAS ---
     public static final String[] categorias = {
             "Todos",
-            "Móbiles",
-            "Ordenadores/Laptops",
+            "Móviles",
+            "Ordenadores / Laptops",
             "Electrónica y electrodomésticos",
             "Vehículos",
             "Consolas y videojuegos",
@@ -29,9 +29,8 @@ public class Constantes {
             "Renovado"
     };
 
-    // Método para obtener el tiempo actual en milisegundos como Long
+    // Método para obtener el tiempo actual en milisegundos
     public static long obtenerTiempoDis() {
         return System.currentTimeMillis();
     }
 }
-

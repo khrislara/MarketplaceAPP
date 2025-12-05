@@ -20,14 +20,26 @@ public class Producto {
     private double precio;
     private String vendedorId;
     private long fechaPublicacion;
+
     private List<String> imageUrls;
 
-    // Constructor vacío requerido para Firebase
+    // Constructor vacío requerido por Firebase
     public Producto() {
         this.imageUrls = new ArrayList<>();
     }
 
-    public Producto(String nombre, String marca, String categoria, String condicion, String ubicacion, String descripcion, String direccion, double precio, String vendedorId, long fechaPublicacion, List<String> imageUrls) {
+    public Producto(String nombre,
+                    String marca,
+                    String categoria,
+                    String condicion,
+                    String ubicacion,
+                    String descripcion,
+                    String direccion,
+                    double precio,
+                    String vendedorId,
+                    long fechaPublicacion,
+                    List<String> imageUrls) {
+
         this.nombre = nombre;
         this.marca = marca;
         this.categoria = categoria;
@@ -38,10 +50,13 @@ public class Producto {
         this.precio = precio;
         this.vendedorId = vendedorId;
         this.fechaPublicacion = fechaPublicacion;
-        this.imageUrls = imageUrls != null ? imageUrls : new ArrayList<>();
+
+        this.imageUrls = (imageUrls != null) ? imageUrls : new ArrayList<>();
     }
 
+    //====================================
     // Getters y Setters
+    //====================================
 
     @Exclude
     public String getId() {
@@ -55,7 +70,6 @@ public class Producto {
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -63,7 +77,6 @@ public class Producto {
     public String getMarca() {
         return marca;
     }
-
     public void setMarca(String marca) {
         this.marca = marca;
     }
@@ -71,7 +84,6 @@ public class Producto {
     public String getCategoria() {
         return categoria;
     }
-
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
@@ -79,7 +91,6 @@ public class Producto {
     public String getCondicion() {
         return condicion;
     }
-
     public void setCondicion(String condicion) {
         this.condicion = condicion;
     }
@@ -87,7 +98,6 @@ public class Producto {
     public String getUbicacion() {
         return ubicacion;
     }
-
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
     }
@@ -95,7 +105,6 @@ public class Producto {
     public String getDescripcion() {
         return descripcion;
     }
-
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
@@ -103,7 +112,6 @@ public class Producto {
     public String getDireccion() {
         return direccion;
     }
-
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
@@ -111,7 +119,6 @@ public class Producto {
     public double getPrecio() {
         return precio;
     }
-
     public void setPrecio(double precio) {
         this.precio = precio;
     }
@@ -119,7 +126,6 @@ public class Producto {
     public String getVendedorId() {
         return vendedorId;
     }
-
     public void setVendedorId(String vendedorId) {
         this.vendedorId = vendedorId;
     }
@@ -127,7 +133,6 @@ public class Producto {
     public long getFechaPublicacion() {
         return fechaPublicacion;
     }
-
     public void setFechaPublicacion(long fechaPublicacion) {
         this.fechaPublicacion = fechaPublicacion;
     }
@@ -135,9 +140,7 @@ public class Producto {
     public List<String> getImageUrls() {
         return imageUrls;
     }
-
     public void setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
     }
 }
-

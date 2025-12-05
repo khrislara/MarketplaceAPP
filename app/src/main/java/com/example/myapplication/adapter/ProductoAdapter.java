@@ -9,31 +9,33 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
 import com.example.myapplication.Detalle_Producto;
 import com.example.myapplication.R;
 import com.example.myapplication.model.Producto;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
-
-// Adaptador modificado para soportar el filtrado de productos y carga segura de imágenes
 public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder> {
 
     private static final String TAG = "ProductoAdapter";
 
     private final Context context;
-    // Lista visible para el RecyclerView (la que se filtra)
+
+    // Lista visible para el RecyclerView
     private List<Producto> listaProductos;
-    // Copia de la lista original para restaurar el filtro
+
+    // Copia de la lista original (para restaurar filtros)
     private final List<Producto> listaOriginal;
 
     public ProductoAdapter(Context context, List<Producto> lista) {
         this.context = context;
-        // Inicializa ambas listas con la lista pasada
+
+        // Inicializamos las listas como copias independientes
         this.listaProductos = new ArrayList<>(lista);
         this.listaOriginal = new ArrayList<>(lista);
     }
@@ -45,100 +47,95 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.Produc
         return new ProductoViewHolder(view);
     }
 
-
+    @Override
     public void onBindViewHolder(@NonNull ProductoViewHolder holder, int position) {
         Producto producto = listaProductos.get(position);
 
-        // A. Asignar datos del Producto a las Vistas
+        // Nombre y precio
         holder.tvNombre.setText(producto.getNombre());
-        // Formateamos el precio para asegurar un formato de moneda consistente
         holder.tvPrecio.setText(String.format(Locale.getDefault(), "$%.2f", producto.getPrecio()));
 
-        // 1. Asignamos el placeholder por defecto antes de intentar cargar la URL
+        // Placeholder por defecto
         holder.ivImagenProducto.setImageResource(R.drawable.agregar_img);
 
+        // CARGA DE IMAGEN SEGÚN GUÍA
         if (producto.getImageUrls() != null && !producto.getImageUrls().isEmpty()) {
-            String imageUrl = producto.getImageUrls().get(0); // Obtener la primera URL
 
-            // 2. Validación CRÍTICA: La URL debe ser una cadena válida (no nula ni vacía)
+            String imageUrl = producto.getImageUrls().get(0);
+
             if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+
                 Glide.with(context)
                         .load(imageUrl)
-                        .placeholder(R.drawable.agregar_img) // Placeholder temporal mientras carga
+                        .placeholder(R.drawable.agregar_img)
                         .error(R.drawable.agregar_img)
                         .centerCrop()
                         .into(holder.ivImagenProducto);
+
+            } else {
+                Log.w(TAG, "URL de imagen vacía para producto ID: " + producto.getId());
             }
+
+        } else {
+            Log.d(TAG, "Producto sin imágenes: " + producto.getNombre());
         }
 
-
-        // B. Manejo del Clic en el Ítem
+        // Click al producto → abre pantalla de detalle
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, Detalle_Producto.class);
-            // Enviamos el ID del producto seleccionado a la pantalla de detalle
             intent.putExtra(Detalle_Producto.EXTRA_PRODUCTO_ID, producto.getId());
             context.startActivity(intent);
         });
     }
-
 
     @Override
     public int getItemCount() {
         return listaProductos.size();
     }
 
+    // Actualización al recibir datos nuevos desde Firebase
     public void actualizarProductos(List<Producto> nuevaLista) {
-        // 1. Limpia y reemplaza la lista visible
         this.listaProductos.clear();
         this.listaProductos.addAll(nuevaLista);
 
-        // 2. Limpia y reemplaza la lista original (para que el filtro funcione con la nueva data)
         this.listaOriginal.clear();
         this.listaOriginal.addAll(nuevaLista);
 
-        // 3. Notifica al RecyclerView para que se redibuje
         notifyDataSetChanged();
-        Log.d(TAG, "Lista de productos actualizada. Total: " + nuevaLista.size());
+
+        Log.d(TAG, "Productos actualizados. Total: " + nuevaLista.size());
     }
 
-
-    // Filtra los productos según el texto ingresado
+    // FILTRO de productos
     public void filtrar(String texto) {
-        String textoBusqueda = texto.toLowerCase(Locale.getDefault()).trim();
+        String query = texto.toLowerCase(Locale.getDefault()).trim();
 
-        // Crea una nueva lista para los resultados filtrados.
-        List<Producto> listaFiltrada = new ArrayList<>();
+        List<Producto> filtrados = new ArrayList<>();
 
-        if (textoBusqueda.isEmpty()) {
-            // Si el texto está vacío, usamos la lista original completa para restaurar.
-            listaFiltrada.addAll(listaOriginal);
-            Log.d(TAG, "Búsqueda vacía. Mostrando todos los productos: " + listaFiltrada.size());
+        if (query.isEmpty()) {
+            filtrados.addAll(listaOriginal);
         } else {
-            // Filtramos iterando sobre la lista original (la inmutable).
-            for (Producto producto : listaOriginal) {
-                if (producto.getNombre().toLowerCase(Locale.getDefault()).contains(textoBusqueda)) {
-                    listaFiltrada.add(producto);
+            for (Producto p : listaOriginal) {
+                if (p.getNombre().toLowerCase(Locale.getDefault()).contains(query)) {
+                    filtrados.add(p);
                 }
             }
-            Log.d(TAG, "Productos encontrados para '" + texto + "': " + listaFiltrada.size());
         }
 
-        // Reemplaza la lista actual con la nueva lista filtrada (o completa).
-        this.listaProductos = listaFiltrada;
-
+        this.listaProductos = filtrados;
         notifyDataSetChanged();
     }
 
-    // ViewHolder con los IDs
+    // ViewHolder
     public static class ProductoViewHolder extends RecyclerView.ViewHolder {
-        // Agregamos la referencia al ImageView
+
         ImageView ivImagenProducto;
         TextView tvNombre;
         TextView tvPrecio;
 
         public ProductoViewHolder(@NonNull View itemView) {
             super(itemView);
-            // CRÍTICO: Debes asegurarte de que este ID exista en tu layout activity_item_producto.xml
+
             ivImagenProducto = itemView.findViewById(R.id.iv_producto_imagen);
             tvNombre = itemView.findViewById(R.id.tv_producto_titulo);
             tvPrecio = itemView.findViewById(R.id.tv_producto_precio);
