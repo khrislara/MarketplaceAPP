@@ -3,11 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.myapplication">
 
-    <!-- Permisos -->
+    <!-- PERMISOS -->
+    <!-- Acceso a internet -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!-- Permisos de almacenamiento (solo hasta SDK 28) -->
+    <!-- Acceso a imágenes de la galería -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <!-- Solo para versiones antiguas (Android 9 y anteriores) -->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
@@ -23,7 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
-        <!-- Actividad principal -->
+        <!-- ACTIVIDAD PRINCIPAL (Login) -->
         <activity
             android:name=".Login"
             android:exported="true">
@@ -33,16 +37,16 @@
             </intent-filter>
         </activity>
 
-        <!-- Otras actividades -->
-        <activity android:name=".AnunciosActivity" />
-        <activity android:name=".CambiarPasswordActivity" />
-        <activity android:name=".ChatActivity" />
-        <activity android:name=".CuentaActivity" />
-        <activity android:name=".Detalle_Producto" />
-        <activity android:name=".EditarPerfilActivity" />
-        <activity android:name=".Home" />
-        <activity android:name=".Registro" />
-        <activity android:name=".Publicar" />
+        <!-- ACTIVIDADES SECUNDARIAS -->
+        <activity android:name=".Home" android:exported="true"/>
+        <activity android:name=".Registro" android:exported="true"/>
+        <activity android:name=".Publicar" android:exported="true"/>
+        <activity android:name=".AnunciosActivity" android:exported="true"/>
+        <activity android:name=".Detalle_Producto" android:exported="true"/>
+        <activity android:name=".EditarPerfilActivity" android:exported="true"/>
+        <activity android:name=".CuentaActivity" android:exported="true"/>
+        <activity android:name=".CambiarPasswordActivity" android:exported="true"/>
+        <activity android:name=".ChatActivity" android:exported="true"/>
 
     </application>
 

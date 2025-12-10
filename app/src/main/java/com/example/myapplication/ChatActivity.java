@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.EditText;
@@ -17,25 +16,31 @@ import android.widget.Toast;
 
 import com.example.myapplication.adapter.MensajeAdapter;
 import com.example.myapplication.model.Mensaje;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private static final String CURRENT_USER_ID = "usuario_propio";
-
     private RecyclerView recyclerView;
     private EditText etMensaje;
-    private ImageButton btnEnviarMensaje;
-    private ImageButton btnEnviarImagen;
-    private TextView tvNombreContacto;
-    private TextView tvEstadoContacto;
+    private ImageButton btnEnviar;
+    private ImageButton btnImagen;
+    private TextView tvNombreContacto, tvEstadoContacto;
 
     private MensajeAdapter mensajeAdapter;
     private List<Mensaje> listaMensajes;
 
-    // Lanzador para abrir la galería
+    private String currentUserId;
+    private String otherUserId;
+    private String chatId;
+
+    private DatabaseReference chatRef;
+
     private ActivityResultLauncher<String> abrirGaleriaLauncher;
 
     @Override
@@ -43,159 +48,120 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        inicializarVistas();
-        configurarCabecera();
-        configurarRecyclerView();
-        configurarListeners();
+        inicializar();
+        configurarChatId();
 
-        // Registrar launcher para elegir imagen
+        // REGISTRO DEL LAUNCHER PARA ABRIR GALERÍA
         abrirGaleriaLauncher = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
-                this::procesarImagenSeleccionada
+                this::enviarImagen
         );
+
+        configurarRecycler();
+        escucharMensajes();
+
+        btnEnviar.setOnClickListener(v -> enviarMensajeTexto());
+        btnImagen.setOnClickListener(v -> abrirGaleriaLauncher.launch("image/*"));
     }
 
-    private void inicializarVistas() {
+    private void inicializar() {
+        recyclerView = findViewById(R.id.recyclerViewChat);
+        etMensaje = findViewById(R.id.editTextMensaje);
+        btnEnviar = findViewById(R.id.btnEnviar);
+        btnImagen = findViewById(R.id.btnAttachImage);
         tvNombreContacto = findViewById(R.id.tvContactName);
         tvEstadoContacto = findViewById(R.id.tvContactStatus);
 
-        recyclerView = findViewById(R.id.recyclerViewChat);
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        otherUserId = getIntent().getStringExtra("otherUserId");
 
-        etMensaje = findViewById(R.id.editTextMensaje);
-        btnEnviarMensaje = findViewById(R.id.btnEnviar);
-        btnEnviarImagen = findViewById(R.id.btnAttachImage);
-    }
-
-    private void configurarCabecera() {
-        tvNombreContacto.setText("DiegoDev");
+        // NOMBRE DEL CONTACTO EN LA PARTE SUPERIOR
+        tvNombreContacto.setText(getIntent().getStringExtra("nombreContacto"));
         tvEstadoContacto.setText("online");
 
-        ImageButton btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> finish());
+        listaMensajes = new ArrayList<>();
     }
 
-    private void configurarRecyclerView() {
-        listaMensajes = cargarMensajesDePrueba();
+    private void configurarChatId() {
+        // Ordenar los UID para que el chat sea el mismo en ambos teléfonos
+        if (currentUserId.compareTo(otherUserId) < 0)
+            chatId = currentUserId + "_" + otherUserId;
+        else
+            chatId = otherUserId + "_" + currentUserId;
 
-        mensajeAdapter = new MensajeAdapter(this, listaMensajes, CURRENT_USER_ID);
+        chatRef = FirebaseDatabase.getInstance().getReference("chats")
+                .child(chatId)
+                .child("mensajes");
+    }
+
+    private void configurarRecycler() {
+        mensajeAdapter = new MensajeAdapter(this, listaMensajes, currentUserId);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setStackFromEnd(true);
-
+        layoutManager.setStackFromEnd(true); // BAJA AUTOMÁTICAMENTE AL FINAL
         recyclerView.setLayoutManager(layoutManager);
+
         recyclerView.setAdapter(mensajeAdapter);
     }
 
-    private void configurarListeners() {
+    private void escucharMensajes() {
+        chatRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listaMensajes.clear();
 
-        btnEnviarMensaje.setOnClickListener(v -> enviarMensajeSimulado());
+                for (DataSnapshot msjSnap : snapshot.getChildren()) {
+                    Mensaje mensaje = msjSnap.getValue(Mensaje.class);
+                    if (mensaje != null)
+                        listaMensajes.add(mensaje);
+                }
 
-        // Enviar Imagen
-        btnEnviarImagen.setOnClickListener(v -> {
-            abrirGaleriaLauncher.launch("image/*");
+                mensajeAdapter.notifyDataSetChanged();
+                recyclerView.scrollToPosition(listaMensajes.size() - 1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 
-    // Recibe la imagen seleccionada desde la galería
-    private void procesarImagenSeleccionada(Uri uriImagen) {
-        if (uriImagen == null) {
-            Toast.makeText(this, "No seleccionaste ninguna imagen.", Toast.LENGTH_SHORT).show();
+    private void enviarMensajeTexto() {
+        String texto = etMensaje.getText().toString().trim();
+
+        if (texto.isEmpty()) {
+            Toast.makeText(this, "Escribe un mensaje.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Crear mensaje tipo imagen
-        Mensaje mensajeImagen = new Mensaje(
-                "ID_IMG_" + (listaMensajes.size() + 1),
-                CURRENT_USER_ID,
-                null,               // texto vacío
-                System.currentTimeMillis()
-        );
-        mensajeImagen.setImagenUri(uriImagen.toString()); // <--- IMPORTANTE
+        String mensajeId = chatRef.push().getKey();
 
-        listaMensajes.add(mensajeImagen);
-        mensajeAdapter.notifyItemInserted(listaMensajes.size() - 1);
-        recyclerView.scrollToPosition(listaMensajes.size() - 1);
+        Map<String, Object> msj = new HashMap<>();
+        msj.put("id", mensajeId);
+        msj.put("remitenteId", currentUserId);
+        msj.put("texto", texto);
+        msj.put("imagenUri", "");
+        msj.put("timestamp", System.currentTimeMillis());
 
-        Toast.makeText(this, "Imagen enviada.", Toast.LENGTH_SHORT).show();
+        chatRef.child(mensajeId).setValue(msj);
 
-        // Simular respuesta con imagen
-        simularRespuestaImagen();
+        etMensaje.setText("");
     }
 
-    private void enviarMensajeSimulado() {
-        String texto = etMensaje.getText().toString().trim();
-
-        if (!texto.isEmpty()) {
-            Mensaje nuevoMensaje = new Mensaje(
-                    "ID_SIMULADO_" + (listaMensajes.size() + 1),
-                    CURRENT_USER_ID,
-                    texto,
-                    System.currentTimeMillis()
-            );
-
-            listaMensajes.add(nuevoMensaje);
-            mensajeAdapter.notifyItemInserted(listaMensajes.size() - 1);
-            recyclerView.scrollToPosition(listaMensajes.size() - 1);
-
-            etMensaje.setText("");
-
-            simularRespuesta();
-
-        } else {
-            Toast.makeText(this, "Escriba un mensaje.", Toast.LENGTH_SHORT).show();
+    private void enviarImagen(Uri uri) {
+        if (uri == null) {
+            Toast.makeText(this, "No seleccionaste imagen", Toast.LENGTH_SHORT).show();
+            return;
         }
-    }
 
-    private void simularRespuesta() {
-        String respuestaTexto = "¡Hola! Gracias por tu mensaje. El producto sigue disponible.";
+        String mensajeId = chatRef.push().getKey();
 
-        Mensaje respuesta = new Mensaje(
-                "ID_RESPUESTA_" + (listaMensajes.size() + 1),
-                "DiegoDev_id",
-                respuestaTexto,
-                System.currentTimeMillis() + 1000
-        );
+        Map<String, Object> msj = new HashMap<>();
+        msj.put("id", mensajeId);
+        msj.put("remitenteId", currentUserId);
+        msj.put("texto", "");
+        msj.put("imagenUri", uri.toString());  // URI DIRECTA DE GALERÍA
+        msj.put("timestamp", System.currentTimeMillis());
 
-        recyclerView.postDelayed(() -> {
-            listaMensajes.add(respuesta);
-            mensajeAdapter.notifyItemInserted(listaMensajes.size() - 1);
-            recyclerView.scrollToPosition(listaMensajes.size() - 1);
-        }, 1000);
-    }
-
-    private void simularRespuestaImagen() {
-
-        Mensaje respuestaImg = new Mensaje(
-                "ID_RESP_IMG_" + (listaMensajes.size() + 1),
-                "DiegoDev_id",
-                null,
-                System.currentTimeMillis()
-        );
-
-        respuestaImg.setImagenUri("android.resource://" + getPackageName() + "/" + R.drawable.ic_image_sample);
-
-        recyclerView.postDelayed(() -> {
-            listaMensajes.add(respuestaImg);
-            mensajeAdapter.notifyItemInserted(listaMensajes.size() - 1);
-            recyclerView.scrollToPosition(listaMensajes.size() - 1);
-        }, 1500);
-    }
-
-    private List<Mensaje> cargarMensajesDePrueba() {
-        List<Mensaje> mensajes = new ArrayList<>();
-
-        mensajes.add(new Mensaje("m1", "DiegoDev_id",
-                "¡Hola! ¿Aún tienes la bicicleta a la venta?",
-                System.currentTimeMillis() - 600000));
-
-        mensajes.add(new Mensaje("m2", CURRENT_USER_ID,
-                "Sí, claro. Está en excelente estado.",
-                System.currentTimeMillis() - 300000));
-
-        mensajes.add(new Mensaje("m3", "DiegoDev_id",
-                "¿Podrías enviarme más fotos?",
-                System.currentTimeMillis() - 120000));
-
-        return mensajes;
+        chatRef.child(mensajeId).setValue(msj);
     }
 }

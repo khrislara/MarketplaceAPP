@@ -57,5 +57,5 @@
     <!-- ================= OTROS ================= -->
     <color name="blanco">#FFFFFF</color>
     <color name="naranjo">#D33300</color>
-
+    <color name="rojo">#E60000</color>
 </resources>

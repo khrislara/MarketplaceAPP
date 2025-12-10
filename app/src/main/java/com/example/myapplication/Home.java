@@ -1,35 +1,39 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.SearchView;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
 import com.example.myapplication.adapter.ProductoAdapter;
 import com.example.myapplication.model.Producto;
+
 import java.util.ArrayList;
 import java.util.List;
 import android.util.Log;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import androidx.annotation.NonNull;
-
-// FIN MODIFICACIÓN SEMANA 9
 
 public class Home extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";
+    private static final int EDITAR_PRODUCTO_REQUEST = 1001;
 
     // Vistas principales
     private RecyclerView recyclerView;
@@ -37,14 +41,13 @@ public class Home extends AppCompatActivity {
     private BottomNavigationView bottomNav;
     private Toolbar toolbar;
 
-    // SEMANA 5: Referencia al Buscador y al Adaptador
+    // Buscador y adaptador
     private SearchView searchViewProductos;
     private ProductoAdapter productoAdapter;
 
-    // INICIO MODIFICACIÓN SEMANA 9: Variables de Firebase y datos
-    private DatabaseReference databaseRef; // Referencia a la base de datos
-    private List<Producto> listaProductosActual; // Lista que mantendrá los datos en memoria
-    // FIN MODIFICACIÓN SEMANA 9
+    // Firebase
+    private DatabaseReference databaseRef;
+    private List<Producto> listaProductosActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,46 +63,43 @@ public class Home extends AppCompatActivity {
         searchViewProductos = findViewById(R.id.search_view_productos);
         bottomNav = findViewById(R.id.bottom_navigation_view);
 
-        // 2. INICIO MODIFICACIÓN SEMANA 9: Inicializar Firebase y la lista de datos
+        // Firebase productos
         databaseRef = FirebaseDatabase.getInstance().getReference("productos");
         listaProductosActual = new ArrayList<>();
-        // FIN MODIFICACIÓN SEMANA 9
 
-        // 3. Configuración CLAVE del RecyclerView
+        // Configurar Recycler
         configurarRecyclerView();
 
-        // 4. Configuración del Listener del Buscador para escuchar los cambios de texto
+        // Configurar buscador
         configurarBuscador();
 
-        // 5. Botón FAB para publicar producto
+        // Publicar nuevo producto
         fabPublicar.setOnClickListener(v -> {
             Intent intent = new Intent(Home.this, Publicar.class);
             startActivity(intent);
         });
 
-        // 6. Configuración del Bottom Nav (tu código existente)
-        MenuItem homeItem = bottomNav.getMenu().findItem(R.id.navigation_home);
-        if (homeItem != null) {
-            homeItem.setChecked(true);
-        }
+        // --- BOTTOM NAV ---
+        if (bottomNav.getMenu().findItem(R.id.navigation_home) != null)
+            bottomNav.getMenu().findItem(R.id.navigation_home).setChecked(true);
+
         bottomNav.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
 
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            Intent intent;
 
             if (itemId == R.id.navigation_chats) {
-                Toast.makeText(Home.this, "Abriendo Chats (Semana 6.1)", Toast.LENGTH_SHORT).show();
-                intent = new Intent(Home.this, ChatActivity.class);
-                startActivity(intent);
+                Intent intentChat = new Intent(Home.this, ChatActivity.class);
+                // TODO: pasar datos reales del otro usuario
+                intentChat.putExtra("otherUserId", "USERID_DEL_OTRO_USUARIO");
+                intentChat.putExtra("nombreContacto", "Contacto");
+                startActivity(intentChat);
                 return true;
             } else if (itemId == R.id.navigation_account) {
-                intent = new Intent(Home.this, CuentaActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(Home.this, CuentaActivity.class));
                 return true;
             } else if (itemId == R.id.navigation_ads) {
-                intent = new Intent(Home.this, AnunciosActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(Home.this, AnunciosActivity.class));
                 return true;
             } else if (itemId == R.id.navigation_home) {
                 return true;
@@ -109,91 +109,93 @@ public class Home extends AppCompatActivity {
             return true;
         });
 
-        // 7. INICIO MODIFICACIÓN SEMANA 9: Iniciar la carga de datos de Firebase
+        // Cargar productos
         cargarProductosDesdeFirebase();
-        // FIN MODIFICACIÓN SEMANA 9
     }
 
-    /**
-     * SEMANA 5: Método para configurar el buscador.
-     * Implementa OnQueryTextListener para detectar el texto ingresado.
-     */
     private void configurarBuscador() {
         if (searchViewProductos != null) {
             searchViewProductos.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
+                public boolean onQueryTextSubmit(String query) { return false; }
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    if (productoAdapter != null) {
-                        productoAdapter.filtrar(newText);
-                    }
+                    if (productoAdapter != null) productoAdapter.filtrar(newText);
                     return true;
                 }
             });
         }
     }
 
-
-    /**
-     * 2. Configura el RecyclerView.
-     * MODIFICACIÓN SEMANA 9: Usa una lista inicialmente vacía.
-     */
     private void configurarRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // MODIFICACIÓN SEMANA 9: En lugar de cargar datos de prueba, usamos la lista vacía/actual
         productoAdapter = new ProductoAdapter(this, listaProductosActual);
+
+        // Configurar listener para editar/eliminar productos
+        productoAdapter.setOnProductoClickListener(new ProductoAdapter.OnProductoClickListener() {
+            @Override
+            public void onEditarClick(Producto producto) {
+                if (producto.getId() != null) {
+                    Intent intent = new Intent(Home.this, EditarProductoActivity.class);
+                    intent.putExtra("productoId", producto.getId());
+                    startActivityForResult(intent, EDITAR_PRODUCTO_REQUEST);
+                }
+            }
+
+            @Override
+            public void onEliminarClick(Producto producto) {
+                if (producto.getId() != null) {
+                    databaseRef.child(producto.getId()).removeValue()
+                            .addOnSuccessListener(aVoid ->
+                                    Toast.makeText(Home.this, "Producto eliminado", Toast.LENGTH_SHORT).show())
+                            .addOnFailureListener(e ->
+                                    Toast.makeText(Home.this, "Error al eliminar producto", Toast.LENGTH_SHORT).show());
+                }
+            }
+        });
+
         recyclerView.setAdapter(productoAdapter);
     }
 
-    /**
-     * SEMANA 9: Método para cargar los productos de Realtime Database.
-     * Utiliza un ValueEventListener para obtener los datos y escuchar futuros cambios.
-     */
     private void cargarProductosDesdeFirebase() {
-        Log.d(TAG, "Iniciando ValueEventListener para Realtime Database...");
+        Log.d(TAG, "Cargando productos...");
 
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listaProductosActual.clear(); // Limpiamos la lista
+                listaProductosActual.clear();
 
-                // Iterar sobre los productos publicados
                 for (DataSnapshot productSnapshot : snapshot.getChildren()) {
                     try {
-                        // Mapeamos los datos del nodo al objeto Producto
                         Producto producto = productSnapshot.getValue(Producto.class);
-
                         if (producto != null) {
-                            // Asignamos la clave de Firebase (el ID único) al objeto Producto
                             producto.setId(productSnapshot.getKey());
                             listaProductosActual.add(producto);
                         }
                     } catch (Exception e) {
-                        Log.e(TAG, "Error al mapear un producto de DB: " + productSnapshot.getKey(), e);
+                        Log.e(TAG, "Error producto: " + productSnapshot.getKey(), e);
                     }
                 }
 
-                // Actualizar el adaptador con los nuevos datos leídos
                 productoAdapter.actualizarProductos(listaProductosActual);
-
-                if (listaProductosActual.isEmpty()) {
-                    Log.d(TAG, "Carga exitosa. No hay productos en la base de datos.");
-                } else {
-                    Log.d(TAG, "Carga exitosa. Total de productos: " + listaProductosActual.size());
-                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Fallo al leer los productos de Realtime Database: " + error.getMessage(), error.toException());
-                Toast.makeText(Home.this, "Error al cargar productos: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e(TAG, "Error Firebase: " + error.getMessage());
+                Toast.makeText(Home.this, "Error al cargar productos", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    //
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == EDITAR_PRODUCTO_REQUEST && resultCode == RESULT_OK){
+            cargarProductosDesdeFirebase(); // recargar lista
+        }
     }
 
     @Override
@@ -205,15 +207,13 @@ public class Home extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_logout) {
-            Toast.makeText(Home.this, "Cerrando Sesión (Simulación)", Toast.LENGTH_SHORT).show();
             irALogin();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    // Navega de vuelta a LoginActivity
-    public void irALogin() {
+    private void irALogin() {
         Intent intent = new Intent(Home.this, Login.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

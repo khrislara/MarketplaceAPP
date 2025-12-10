@@ -1,77 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blanco"
-    tools:context=".AnunciosActivity">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <!-- 1. AppBar con Contenedor de Barra (RelativeLayout) -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <TextView
+        android:id="@+id/tv_no_anuncios"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:text="No tienes anuncios"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="32dp"/>
 
-        <!-- Usamos un RelativeLayout para controlar la posición del botón y título -->
-        <RelativeLayout
-            android:id="@+id/toolbar_anuncios"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/verdeEtiqueta">
-
-            <!-- Botón de Retroceso (TU COMPONENTE) -->
-            <ImageButton
-                android:id="@+id/btnBack"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Volver"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:src="@drawable/volver"
-                app:tint="@color/blanco"
-                android:scaleType="centerInside"/>
-
-            <!-- Título Centrado (Simulación de Título de Toolbar) -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Mis Anuncios"
-                android:textColor="@color/blanco"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- 2. Contenido Principal: RecyclerView de Productos -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_mis_productos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:paddingBottom="0dp"
-        android:clipToPadding="false"
-        tools:listitem="@layout/item_producto"/>
-
-    <!-- Mensaje para cuando no hay anuncios -->
-    <TextView
-        android:id="@+id/tv_no_anuncios"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="¡Aún no has creado ningún anuncio! Comienza a vender tus productos."
-        android:textSize="16sp"
-        android:textColor="@color/amarillo_lima"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:padding="32dp"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:layout_height="match_parent"/>
+</LinearLayout>

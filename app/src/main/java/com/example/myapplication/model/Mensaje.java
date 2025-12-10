@@ -4,24 +4,23 @@ public class Mensaje {
 
     private String id;
     private String remitenteId;
-    private String contenido;
+    private String texto;      // Texto del mensaje
+    private String imagenUri;  // Imagen del mensaje (si existe)
     private long timestamp;
 
-    // NUEVO SEGÚN LA GUÍA: Campo para imagen
-    private String imagenUri;
-
     public Mensaje() {
-        // Inicialización por defecto (requerido por Firebase)
+        // Necesario para Firebase
     }
 
-    public Mensaje(String id, String remitenteId, String contenido, long timestamp) {
+    public Mensaje(String id, String remitenteId, String texto, long timestamp) {
         this.id = id;
         this.remitenteId = remitenteId;
-        this.contenido = contenido;
+        this.texto = texto;
         this.timestamp = timestamp;
     }
 
-    // Getters y Setters
+    // GETTERS & SETTERS
+
     public String getId() {
         return id;
     }
@@ -38,12 +37,20 @@ public class Mensaje {
         this.remitenteId = remitenteId;
     }
 
-    public String getContenido() {
-        return contenido;
+    public String getTexto() {
+        return texto;
     }
 
-    public void setContenido(String contenido) {
-        this.contenido = contenido;
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    public String getImagenUri() {
+        return imagenUri;
+    }
+
+    public void setImagenUri(String imagenUri) {
+        this.imagenUri = imagenUri;
     }
 
     public long getTimestamp() {
@@ -52,17 +59,5 @@ public class Mensaje {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
-    }
-
-    // -----------------------------
-    // NUEVOS MÉTODOS (solo lo necesario según la guía)
-    // -----------------------------
-
-    public String getImagenUri() {
-        return imagenUri;
-    }
-
-    public void setImagenUri(String imagenUri) {
-        this.imagenUri = imagenUri;
     }
 }
